@@ -85,7 +85,7 @@ def save_call_log(
     def _try_insert(data: dict, label: str) -> dict:
         for attempt in range(_MAX_RETRIES):
             try:
-                res = supabase.table("call_logs").insert(data).execute()
+                res = supabase.table("ai_call_logs").insert(data).execute()
                 logger.info(f"Saved call log for {phone} ({label})")
                 return {"success": True, "data": res.data}
             except Exception as e:
@@ -114,7 +114,7 @@ def fetch_call_logs(limit: int = 50, tenant_id: str | None = None) -> list:
         return []
     for attempt in range(_MAX_RETRIES):
         try:
-            q = supabase.table("call_logs").select("*").order("created_at", desc=True)
+            q = supabase.table("ai_call_logs").select("*").order("created_at", desc=True)
             if tenant_id:
                 q = q.eq("tenant_id", tenant_id)
             return q.limit(limit).execute().data
@@ -133,7 +133,7 @@ def fetch_stats(tenant_id: str | None = None) -> dict:
     if not supabase:
         return _empty
     try:
-        q = supabase.table("call_logs").select("duration_seconds, was_booked")
+        q = supabase.table("ai_call_logs").select("duration_seconds, was_booked")
         if tenant_id:
             q = q.eq("tenant_id", tenant_id)
         rows = q.execute().data or []

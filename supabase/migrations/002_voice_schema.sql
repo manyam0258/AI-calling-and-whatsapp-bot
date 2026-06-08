@@ -4,7 +4,7 @@
 -- ============================================================
 
 -- Call logs
-CREATE TABLE IF NOT EXISTS call_logs (
+CREATE TABLE IF NOT EXISTS ai_call_logs (
   id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id           TEXT DEFAULT 'default',
   phone_number        TEXT NOT NULL,
@@ -23,12 +23,12 @@ CREATE TABLE IF NOT EXISTS call_logs (
   created_at          TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_call_logs_tenant     ON call_logs(tenant_id);
-CREATE INDEX IF NOT EXISTS idx_call_logs_phone      ON call_logs(phone_number);
-CREATE INDEX IF NOT EXISTS idx_call_logs_created_at ON call_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_call_logs_tenant     ON ai_call_logs(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_call_logs_phone      ON ai_call_logs(phone_number);
+CREATE INDEX IF NOT EXISTS idx_call_logs_created_at ON ai_call_logs(created_at DESC);
 
 -- Real-time transcript streaming
-CREATE TABLE IF NOT EXISTS call_transcripts (
+CREATE TABLE IF NOT EXISTS ai_call_transcripts (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   call_room_id TEXT NOT NULL,
   phone        TEXT,
@@ -38,10 +38,10 @@ CREATE TABLE IF NOT EXISTS call_transcripts (
   created_at   TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_transcripts_room ON call_transcripts(call_room_id);
+CREATE INDEX IF NOT EXISTS idx_transcripts_room ON ai_call_transcripts(call_room_id);
 
 -- Active calls (real-time status)
-CREATE TABLE IF NOT EXISTS active_calls (
+CREATE TABLE IF NOT EXISTS ai_active_calls (
   room_id      TEXT PRIMARY KEY,
   tenant_id    TEXT DEFAULT 'default',
   phone        TEXT,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS active_calls (
 );
 
 -- Per-tenant voice configs
-CREATE TABLE IF NOT EXISTS voice_configs (
+CREATE TABLE IF NOT EXISTS ai_voice_configs (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id  TEXT UNIQUE NOT NULL DEFAULT 'default',
   config     JSONB NOT NULL DEFAULT '{}',
@@ -59,16 +59,16 @@ CREATE TABLE IF NOT EXISTS voice_configs (
 );
 
 -- RLS (service role key bypasses — for Python agent)
-ALTER TABLE call_logs         ENABLE ROW LEVEL SECURITY;
-ALTER TABLE call_transcripts  ENABLE ROW LEVEL SECURITY;
-ALTER TABLE active_calls      ENABLE ROW LEVEL SECURITY;
-ALTER TABLE voice_configs     ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ai_call_logs         ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ai_call_transcripts  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ai_active_calls      ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ai_voice_configs     ENABLE ROW LEVEL SECURITY;
 
 -- Allow service role full access (used by Python agent)
-CREATE POLICY call_logs_service    ON call_logs        FOR ALL USING (true);
-CREATE POLICY transcripts_service  ON call_transcripts FOR ALL USING (true);
-CREATE POLICY active_service       ON active_calls     FOR ALL USING (true);
-CREATE POLICY configs_service      ON voice_configs    FOR ALL USING (true);
+CREATE POLICY call_logs_service    ON ai_call_logs        FOR ALL USING (true);
+CREATE POLICY transcripts_service  ON ai_call_transcripts FOR ALL USING (true);
+CREATE POLICY active_service       ON ai_active_calls     FOR ALL USING (true);
+CREATE POLICY configs_service      ON ai_voice_configs    FOR ALL USING (true);
 
--- Enable realtime for active_calls
-ALTER PUBLICATION supabase_realtime ADD TABLE active_calls;
+-- Enable realtime for ai_active_calls
+ALTER PUBLICATION supabase_realtime ADD TABLE ai_active_calls;

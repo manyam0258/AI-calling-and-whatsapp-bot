@@ -16,7 +16,7 @@ Merge **voice-agent2** (Python LiveKit outbound calling agent) and **wacrm** (Ne
 | STT | Sarvam Saaras v3 / Deepgram Nova-2 |
 | TTS | Sarvam Bulbul v3 / ElevenLabs Turbo |
 | LLM | OpenAI / Groq / Claude (configurable per call) |
-| DB | Supabase (`call_logs`, `call_transcripts`, `active_calls`) |
+| DB | Supabase (`ai_call_logs`, `ai_call_transcripts`, `ai_active_calls`) |
 | Notifications | Telegram bot |
 | Booking | Captured as intent during the call → Telegram alert for manual confirmation (no external booking API) |
 | SIP Provider | Vobiz (via LiveKit SIP trunk) |
@@ -240,30 +240,30 @@ services:
 ### New / Modified Tables
 ```sql
 -- SaaS layer
-CREATE TABLE tenants (
+CREATE TABLE ai_tenants (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   plan TEXT DEFAULT 'free',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Add tenant_id to wacrm tables (accounts, contacts, conversations, etc.)
+-- Add tenant_id to wacrm tables (ai_accounts, ai_contacts, ai_conversations, etc.)
 -- Add tenant_id to voice tables
-ALTER TABLE call_logs ADD COLUMN tenant_id UUID REFERENCES tenants(id);
-ALTER TABLE active_calls ADD COLUMN tenant_id UUID REFERENCES tenants(id);
+ALTER TABLE ai_call_logs ADD COLUMN tenant_id UUID REFERENCES ai_tenants(id);
+ALTER TABLE ai_active_calls ADD COLUMN tenant_id UUID REFERENCES ai_tenants(id);
 
 -- Voice agent config per tenant
-CREATE TABLE voice_configs (
+CREATE TABLE ai_voice_configs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  tenant_id UUID REFERENCES tenants(id),
+  tenant_id UUID REFERENCES ai_tenants(id),
   config JSONB NOT NULL DEFAULT '{}',
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Usage
-CREATE TABLE usage_logs (
+CREATE TABLE ai_usage_logs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  tenant_id UUID REFERENCES tenants(id),
+  tenant_id UUID REFERENCES ai_tenants(id),
   month TEXT NOT NULL,
   call_minutes INTEGER DEFAULT 0,
   wa_messages INTEGER DEFAULT 0
@@ -365,4 +365,4 @@ SUPABASE_S3_REGION=
 | Day 4 | Unified sidebar/nav, combined home dashboard, settings page |
 | Day 5 | Multi-tenancy (tenant_id, RLS), onboarding wizard |
 | Day 6 | Billing hooks, Stripe stubs, usage tracking |
-| Day 7 | Docker polish, `.env` templates, README, end-to-end test |
+| Day 7 | Docker polish, 

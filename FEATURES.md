@@ -166,7 +166,7 @@
 | Call Recording | LiveKit Egress records call audio to OGG format |
 | Supabase S3 Storage | Recordings saved to `call-recordings` bucket |
 | Recording URL | Direct playback URL stored in call log |
-| Real-Time Transcript | User + assistant turns logged to `call_transcripts` table during call |
+| Real-Time Transcript | User + assistant turns logged to `ai_call_transcripts` table during call |
 | Post-Call Transcript | Full conversation transcript built from chat context and saved |
 | Transcript Viewer | Call detail page shows full transcript (UI) |
 

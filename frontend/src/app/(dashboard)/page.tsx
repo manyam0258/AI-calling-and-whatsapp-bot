@@ -9,12 +9,12 @@ async function getStats() {
 
   // Fetch WA conversation count (last 30 days)
   const { count: waCount } = await supabase
-    .from("conversations")
+    .from("ai_conversations")
     .select("*", { count: "exact", head: true })
     .gte("created_at", new Date(Date.now() - 30 * 86400000).toISOString());
 
   const { count: contactCount } = await supabase
-    .from("contacts")
+    .from("ai_contacts")
     .select("*", { count: "exact", head: true });
 
   return { waConversations: waCount ?? 0, contacts: contactCount ?? 0 };

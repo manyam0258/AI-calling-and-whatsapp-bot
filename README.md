@@ -34,9 +34,9 @@ A production-ready SaaS platform combining:
                           │
 ┌─────────────────────────▼───────────────────────────┐
 │  Supabase (shared database)                           │
-│  - WA tables: accounts, contacts, conversations, …    │
-│  - Voice tables: call_logs, transcripts, active_calls │
-│  - SaaS tables: tenants, subscriptions, usage_logs   │
+│  - WA tables: ai_accounts, ai_contacts, ai_conversations, …    │
+│  - Voice tables: ai_call_logs, ai_call_transcripts, ai_active_calls │
+│  - SaaS tables: ai_tenants, ai_subscriptions, ai_usage_logs   │
 └─────────────────────────────────────────────────────┘
 ```
 

@@ -350,7 +350,7 @@ After deploying, verify everything works:
 ```
 [ ] Open https://your-domain.com — login page loads
 [ ] Sign up with email → check Supabase Auth for new user
-[ ] Check Supabase → Tables → tenants → new row auto-created
+[ ] Check Supabase → Tables → ai_tenants → new row auto-created
 [ ] Go to Settings → fill in WhatsApp credentials → Save
 [ ] Go to Voice → Agent Config → verify defaults loaded
 [ ] Go to Voice → Make a Call → enter your mobile number → Dispatch

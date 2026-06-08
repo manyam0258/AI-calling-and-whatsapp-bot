@@ -148,7 +148,7 @@ def list_calls(
         sb = db.get_supabase()
         if not sb:
             return {"calls": [], "total": 0}
-        q = sb.table("call_logs").select("*", count="exact").order("created_at", desc=True)
+        q = sb.table("ai_call_logs").select("*", count="exact").order("created_at", desc=True)
         if tenant_id:
             q = q.eq("tenant_id", tenant_id)
         result = q.range(offset, offset + limit - 1).execute()
@@ -168,7 +168,7 @@ def active_calls(
         sb = db.get_supabase()
         if not sb:
             return {"active_calls": []}
-        q = sb.table("active_calls").select("*").eq("status", "active")
+        q = sb.table("ai_active_calls").select("*").eq("status", "active")
         if tenant_id:
             q = q.eq("tenant_id", tenant_id)
         result = q.execute()
@@ -188,12 +188,12 @@ def get_call(
         sb = db.get_supabase()
         if not sb:
             raise HTTPException(503, "Database not configured")
-        result = sb.table("call_logs").select("*").eq("id", call_id).single().execute()
+        result = sb.table("ai_call_logs").select("*").eq("id", call_id).single().execute()
         if not result.data:
             raise HTTPException(404, "Call not found")
         # Also pull transcript lines
         transcripts = (
-            sb.table("call_transcripts")
+            sb.table("ai_call_transcripts")
             .select("role, content, created_at")
             .eq("call_room_id", result.data.get("room_id", ""))
             .order("created_at")
@@ -219,7 +219,7 @@ def analytics(
         if not sb:
             return {"error": "Database not configured"}
 
-        q = sb.table("call_logs").select(
+        q = sb.table("ai_call_logs").select(
             "duration_seconds, was_booked, sentiment, estimated_cost_usd, call_date, call_hour, call_day_of_week, created_at"
         )
         if tenant_id:
