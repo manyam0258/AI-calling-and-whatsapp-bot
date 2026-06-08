@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  # ── Frontend (Next.js) ─────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      VOICE_AGENT_URL: http://voice-agent:8001
+    depends_on:
+      - voice-agent
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Voice Agent (Python FastAPI + LiveKit worker) ──────────────────────────
+  voice-agent:
+    build:
+      context: ./voice-agent
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    volumes:
+      - voice-configs:/app/configs
+      - voice-logs:/var/log
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8001/voice/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  voice-configs:
+  voice-logs:

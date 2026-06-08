@@ -1,0 +1,66 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.141 0.005 285.82);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.82);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.82);
+  --primary: oklch(0.546 0.245 262.881);
+  --primary-foreground: oklch(0.97 0 0);
+  --secondary: oklch(0.96 0.005 285.82);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.96 0.005 285.82);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.96 0.005 285.82);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.004 286.029);
+  --input: oklch(0.92 0.004 286.029);
+  --ring: oklch(0.546 0.245 262.881);
+  --sidebar: oklch(0.985 0.002 247.858);
+  --sidebar-foreground: oklch(0.141 0.005 285.82);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-accent: oklch(0.96 0.005 285.82);
+  --sidebar-border: oklch(0.92 0.004 286.029);
+}
+
+.dark {
+  --background: oklch(0.141 0.005 285.82);
+  --foreground: oklch(0.985 0.002 247.858);
+  --card: oklch(0.21 0.006 285.885);
+  --card-foreground: oklch(0.985 0.002 247.858);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.985 0.002 247.858);
+  --primary: oklch(0.623 0.214 259.815);
+  --primary-foreground: oklch(0.141 0.005 285.82);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0.002 247.858);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0.002 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.623 0.214 259.815);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0.002 247.858);
+  --sidebar-primary: oklch(0.623 0.214 259.815);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-border: oklch(1 0 0 / 10%);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}

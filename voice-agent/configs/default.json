@@ -1,0 +1,16 @@
+{
+  "agent_instructions": "You are a helpful AI assistant making outbound calls. Be polite, concise, and professional. Keep responses to 1-2 short sentences. Get the caller's name before saving any booking intent.",
+  "first_line": "Hello! This is an AI assistant. How can I help you today?",
+  "stt_min_endpointing_delay": 0.3,
+  "min_silence_duration": 0.5,
+  "stt_vad_threshold": 0.8,
+  "llm_model": "gpt-4o-mini",
+  "llm_provider": "openai",
+  "tts_voice": "kavya",
+  "tts_language": "en-IN",
+  "tts_provider": "sarvam",
+  "stt_provider": "sarvam",
+  "stt_language": "unknown",
+  "lang_preset": "multilingual",
+  "max_turns": 25
+}
